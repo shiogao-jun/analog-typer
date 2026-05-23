@@ -1,0 +1,66 @@
+# 텍스트를 메모장에 옮긴 후, TEXT_로 시작하는 파일로 저장
+
+textlist = []
+correct = 0
+wrong = 0
+timesum = 0
+
+import os
+for lines in os.listdir():
+    if lines.startswith('TEXT') and lines.endswith('.txt'):
+        textlist.append(lines)
+
+import time
+
+textdict = {value: key for key, value in dict(enumerate(textlist)).items()}
+
+for text in textdict:
+    print(text.replace('TEXT_','').replace('.txt','')+f': {textdict[text]}')
+    
+order = dict(enumerate(textlist))[int(input('\ntype the number:'))]
+
+with open(order,'r',encoding = 'utf-8') as f:   
+    
+    for x in range(3,0,-1):
+        time.sleep(1)
+        print(f'\n{x}')
+    time.sleep(1)
+    
+    for lines in f.readlines():
+
+        sentence = '\n'+lines.split('\n')[0]+'\n'
+        print(sentence)
+        starttime = time.time()
+        ans = input()
+     
+        timespended = time.time() - starttime
+        timesum += timespended        
+        
+        lineslist = list(lines.split('\n')[0])
+        anslist = list(ans)
+
+        for x in range(len(lineslist)):
+            try:
+                if lineslist[x] != anslist[x]:
+                    wrong += 1
+
+                elif lineslist[x] == anslist[x]:
+                    correct += 1
+
+            except IndexError:
+                wrong += 1
+
+accuracy = correct*100/(correct+wrong)
+print(f'\nACCURACY: {accuracy}%')
+
+if accuracy <= 70:
+    print('CPM CANT BE COUNTED')
+
+else:
+    print(f'CPM: {correct*60/timesum}')
+        
+        
+            
+
+        
+            
